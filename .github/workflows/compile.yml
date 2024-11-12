@@ -26,15 +26,13 @@ jobs:
       - name: Get the latest tag
         id: tag
         run: |
-          # Use the latest commit hash or date as the tag name
-          TAG_NAME=$(date +'%Y%m%d%H%M%S')  # or `git rev-parse --short HEAD`
-          echo "tag_name=$TAG_NAME" >> $GITHUB_ENV
-
+          $TAG_NAME = Get-Date -Format "yyyyMMddHHmmss"
+          echo "tag_name=$TAG_NAME" >> $env:GITHUB_ENV
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.tag_name }}
-          release_name: Release ${{ env.tag_name }}
+          name: Release ${{ env.tag_name }}
           draft: false
           prerelease: false
 
