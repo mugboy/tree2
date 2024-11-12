@@ -13,7 +13,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pyinstaller
-          pip install -r requirements.txt
+          pip install rich
       - name: Build executable
         run: pyinstaller -w --onefile tree2.py 
   # release-bin:
