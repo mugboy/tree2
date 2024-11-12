@@ -18,11 +18,6 @@ jobs:
           pip install rich
       - name: Build executable
         run: pyinstaller -w --onefile tree2.py 
-  release:
-    name: Release
-    runs-on: windows-latest
-    needs: compile-windows
-    steps:
       - name: Get the latest tag
         id: tag
         run: |
