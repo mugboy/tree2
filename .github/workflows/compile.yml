@@ -5,6 +5,8 @@ jobs:
     name: Compile Windows binary
     runs-on: windows-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
@@ -15,7 +17,7 @@ jobs:
           pip install pyinstaller
           pip install rich
       - name: Build executable
-        run: pyinstaller -w --onefile ../../tree2.py 
+        run: pyinstaller -w --onefile tree2.py 
   # release-bin:
   #   name: Release binaries
   #   runs-on: windows-latest
