@@ -29,6 +29,7 @@ jobs:
           $TAG_NAME = Get-Date -Format "yyyyMMddHHmmss"
           echo "tag_name=$TAG_NAME" >> $env:GITHUB_ENV
       - name: Create Release
+        id: create_release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.tag_name }}
