@@ -18,9 +18,32 @@ jobs:
           pip install rich
       - name: Build executable
         run: pyinstaller -w --onefile tree2.py 
-  # release-bin:
-  #   name: Release binaries
-  #   runs-on: windows-latest
-  #   steps:
-  #     - name: Create Release
-  #     - 
+  release:
+    name: Release
+    runs-on: windows-latest
+    needs: compile-windows
+    steps:
+      - name: Get the latest tag
+        id: tag
+        run: |
+          # Use the latest commit hash or date as the tag name
+          TAG_NAME=$(date +'%Y%m%d%H%M%S')  # or `git rev-parse --short HEAD`
+          echo "tag_name=$TAG_NAME" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.tag_name }}
+          release_name: Release ${{ env.tag_name }}
+          draft: false
+          prerelease: false
+
+      - name: Upload binary to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/tree2.exe
+          asset_name: tree2.exe
+          asset_content_type: application/octet-stream
